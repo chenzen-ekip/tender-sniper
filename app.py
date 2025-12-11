@@ -5,27 +5,30 @@ import time
 st.set_page_config(
     page_title="Tender Sniper",
     page_icon="🎯",
-    layout="wide", # Utilise tout l'écran
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS POUR FAIRE APP MOBILE (ET CACHER LA BANDE NOIRE) ---
+# --- BASE DE DONNÉES CLIENTS (SIMULÉE) ---
+# C'est ici que tu définis les codes et les noms
+CLIENTS = {
+    "YESCLEAN": "YesClean",
+    "SBL": "SBL Nettoyage",
+    "DEMO": "Démo Client"
+}
+
+# --- CSS POUR FAIRE APP MOBILE ---
 st.markdown("""
     <style>
-    /* Cacher le menu hamburger, le footer et le header (la bande noire) */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Supprimer les marges en haut pour coller au bord du téléphone */
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 0rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
-    
-    /* Style des boutons "App Mobile" */
     .stButton>button {
         width: 100%;
         border-radius: 12px;
@@ -35,8 +38,6 @@ st.markdown("""
         font-weight: bold;
         border: none;
     }
-    
-    /* Style des alertes */
     .urgent-box {
         background-color: #FFF2F2;
         border: 1px solid #FF4B4B;
@@ -47,12 +48,14 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- GESTION DES ÉTAPES (LOGIN -> ONBOARDING -> DASHBOARD) ---
+# --- GESTION ÉTAT ---
 if 'step' not in st.session_state:
     st.session_state.step = 'login'
+if 'client_name' not in st.session_state:
+    st.session_state.client_name = ""
 
 # ==========================================
-# ÉTAPE 1 : ÉCRAN DE CONNEXION
+# ÉTAPE 1 : LOGIN
 # ==========================================
 if st.session_state.step == 'login':
     st.markdown("<br><br>", unsafe_allow_html=True)
@@ -65,18 +68,21 @@ if st.session_state.step == 'login':
         submitted = st.form_submit_button("SE CONNECTER")
         
         if submitted:
-            if password == "YESCLEAN" or password == "DEMO": # Mot de passe simple
+            # Vérifie si le code existe dans notre liste
+            if password in CLIENTS:
+                st.session_state.client_name = CLIENTS[password] # On enregistre le nom
                 st.session_state.step = 'onboarding'
                 st.rerun()
             else:
-                st.error("Code incorrect.")
+                st.error("Code d'accès invalide.")
 
 # ==========================================
-# ÉTAPE 2 : ONBOARDING (CONFIGURATION)
+# ÉTAPE 2 : ONBOARDING
 # ==========================================
 elif st.session_state.step == 'onboarding':
-    st.title("⚙️ Configuration")
-    st.write("Bienvenue M. Essid. Configurez votre robot pour lancer la recherche.")
+    # On utilise le nom du client ici
+    st.title(f"⚙️ Config {st.session_state.client_name}")
+    st.write("Configurez votre robot pour lancer la recherche.")
     
     with st.form("onboarding_form"):
         st.subheader("1. Vos Cibles")
@@ -102,18 +108,17 @@ elif st.session_state.step == 'onboarding':
         
         if submitted:
             with st.spinner("Le robot scanne les bases de données..."):
-                time.sleep(2) # Faux temps de chargement pour l'effet "Waouh"
+                time.sleep(2)
             st.session_state.step = 'dashboard'
             st.rerun()
 
 # ==========================================
-# ÉTAPE 3 : LE DASHBOARD (RÉSULTATS)
+# ÉTAPE 3 : DASHBOARD
 # ==========================================
 elif st.session_state.step == 'dashboard':
-    # En-tête Client
-    st.write("👋 **Bonjour YesClean**")
+    # On personnalise le Bonjour
+    st.write(f"👋 **Bonjour {st.session_state.client_name}**")
     
-    # KPIs
     col1, col2 = st.columns(2)
     with col1:
         st.metric("Opportunités", "3", "+2 ce matin")
@@ -123,7 +128,7 @@ elif st.session_state.step == 'dashboard':
     st.markdown("---")
     st.subheader("🔥 Alertes Urgentes")
 
-    # CARTE 1 : POMPIDOU (URGENT)
+    # CARTE POMPIDOU
     with st.container():
         st.markdown("""
         <div class="urgent-box">
@@ -139,14 +144,13 @@ elif st.session_state.step == 'dashboard':
         with c2:
             st.button("📥 Dossier (DCE)", key="btn_dce_1")
 
-    # CARTE 2 : AUDENCIA
+    # CARTE AUDENCIA
     with st.expander("🎓 Campus Audencia (St Ouen)", expanded=True):
         st.write("**Budget :** 250 000 € / an")
         st.write("**Date limite :** 15 Janvier")
         st.info("💡 **Avis IA :** Marché parfait pour compléter vos tournées dans le 93.")
         st.button("Voir le dossier", key="btn_2")
 
-    # Bouton de retour aux réglages (discret en bas)
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🔄 Modifier mes filtres"):
         st.session_state.step = 'onboarding'
