@@ -1,0 +1,115 @@
+Entretien des ouvrages annexes d'assainissement pluvial des voiries départementales des Hauts-de-Seine.
+78 - SMO SEINE ET YVELINES VOIRIE
+Mise en ligne : 07/12/2025
+Limite de réponse : 07/01/2026
+Travaux Publics
+Appel d'offres ouvert
+Avis n°AO-2551-0578
+Descriptif
+Source : WEB
+Avis de marché
+Département(s) de publication :78, 91, 75, 95, 28
+Annonce n° 25-133588
+
+Section 1 - Acheteur
+1.1 Acheteur
+Nom officiel : Syndicat mixte ouvert « Seine et Yvelines Voirie »
+Forme juridique de l'acheteur : Autorité locale
+Activité du pouvoir adjudicateur : Services d'administration générale
+
+Section 2 - Procédure
+2.1 Procédure
+Titre : Entretien des ouvrages annexes d'assainissement pluvial des voiries départementales des Hauts-de-Seine
+Description : Le Département assure l'entretien des dispositifs d'assainissement et de gestion des eaux pluviales de voirie. Le présent marché a pour objectif l'entretien des dispositifs existants ou bien qui seront réalisés en cours de marché
+Identifiant de la procédure : 0e9e005d-d5ea-4e80-b89d-495a451acd6e
+Identifiant interne : 2025EP0025
+Type de procédure : Ouverte
+La procédure est accélérée : non
+
+2.1.1 Objet
+Nature du marché : Services
+Nomenclature principale ( cpv ): 90913200 Services de nettoyage de réservoirs
+Nomenclature supplémentaire ( cpv ): 45232452 Ouvrages de drainage
+Nomenclature supplémentaire ( cpv ): 50532000 Services de réparation et d'entretien de machines et d'appareils électriques et de matériel connexe
+
+2.1.2 Lieu d'exécution
+Adresse postale : 11 Avenue du Centre
+Ville : Guyancourt
+Code postal : 78280
+Subdivision pays (NUTS) : Yvelines ( FR103 )
+Pays : France
+
+2.1.3 Valeur
+Valeur estimée hors TVA : 320,000 Euro
+
+2.1.4 Informations générales
+Informations complémentaires : Les prix du contrat sont encadrés selon les montants minimums et maximums suivants : - montant minimum par période : 50 000 euro(s) Ht - montant maximum par période : 160 000 euro(s) Ht La date de notification indiqué dans le présent avis est donné à titre indicatif et sans valeur contractuelle
+Base juridique :
+Directive 2014/24/UE
+
+Section 5 - Lot
+5.1 Identifiant technique du lot : LOT-0000
+Titre : Entretien des ouvrages annexes d'assainissement pluvial des voiries départementales des Hauts-de-Seine
+Description : Le Département assure l'entretien des dispositifs d'assainissement et de gestion des eaux pluviales de voirie. Le présent marché a pour objectif l'entretien des dispositifs existants ou bien qui seront réalisés en cours de marché
+Identifiant interne : S-PF-1749379
+
+5.1.1 Objet
+Nature du marché : Services
+Nomenclature principale ( cpv ): 90913200 Services de nettoyage de réservoirs
+Nomenclature supplémentaire ( cpv ): 45232452 Ouvrages de drainage
+Nomenclature supplémentaire ( cpv ): 50532000 Services de réparation et d'entretien de machines et d'appareils électriques et de matériel connexe
+
+5.1.2 Lieu d'exécution
+Adresse postale : 11 Avenue du Centre
+Ville : Guyancourt
+Code postal : 78280
+Subdivision pays (NUTS) : Yvelines ( FR103 )
+Pays : France
+Informations complémentaires :
+
+5.1.3 Durée estimée
+Date de début : 23/02/2026
+Durée : 24 Mois
+
+5.1.4 Renouvellement
+Nombre maximal de renouvellements : 1
+L'acheteur se réserve le droit d'effectuer des achats supplémentaires auprès du contractant, comme décrit ici : Le contrat peut être reconduit tacitement une fois pour une durée de 24 mois, sans que sa durée globale ne puisse excéder 4 ans. L'acheteur notifie la décision de ne pas reconduire le contrat minimum 2 mois avant la date de fin de période d'exécution en cours
+
+5.1.5 Valeur
+Valeur estimée hors TVA : 320,000 Euro
+
+5.1.6 Informations générales
+Il s'agit d'un marché récurrent
+Participation réservée : La participation n'est pas réservée.
+Les noms et les qualifications professionnelles du personnel chargé de l'exécution du marché doivent être mentionnés : Non requises
+Projet de passation de marché non financé par des fonds de l'UE
+Le marché relève de l'accord sur les marchés publics (AMP) : oui
+
+5.1.9 Critères de sélection
+Sources des critères de sélection : Avis
+Critère : Autorisation ou adhésion à une organisation particulière nécessaire pour les contrats de services
+Description : Déclaration sur l'honneur
+Critère : Assurance responsabilité professionnelle pour les risques
+Critère : Proportion de sous-traitance
+Critère : Effectif moyen annuel
+Critère : Chiffre d'affaires annuel général
+Critère : Références sur des services spécifiés (3 dernières années)
+
+5.1.10 Critères d'attribution
+Critère :
+Type : Qualité
+Description : Valeur environnementale
+Pondération (pourcentage, valeur exacte) : 12
+Critère :
+Type : Qualité
+Description : Valeur technique
+Pondération (pourcentage, valeur exacte) : 38
+Critère :
+Type : Prix
+Description : Prix
+Pondération (pourcentage, valeur exacte) : 50
+
+5.1.12 Conditions du marché public
+Date limite de réception des offres :
+07/01/2026 à 16:00
+Date limite de validité de l'offre : 6 Mois
