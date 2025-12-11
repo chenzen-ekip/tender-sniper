@@ -1,245 +1,153 @@
 import streamlit as st
 import time
 
-# --- Configuration de la page ---
+# --- CONFIGURATION DE LA PAGE ---
 st.set_page_config(
     page_title="Tender Sniper",
     page_icon="🎯",
-    layout="centered",
+    layout="wide", # Utilise tout l'écran
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS Personnalisé (Mobile Native) ---
+# --- CSS POUR FAIRE APP MOBILE (ET CACHER LA BANDE NOIRE) ---
 st.markdown("""
-<style>
-    /* Masquer le menu hamburger (3 points) et le footer */
+    <style>
+    /* Cacher le menu hamburger, le footer et le header (la bande noire) */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    [data-testid="stToolbar"] {visibility: hidden;}
-    .stDeployButton {display:none;}
+    header {visibility: hidden;}
     
-    /* On garde le Header visible pour le bouton Sidebar (Top Left), 
-       mais on le rend transparent ou discret si besoin. 
-       Si on le cache, on ne peut plus ouvrir le menu sur mobile. */
-    /* header {visibility: hidden;}  <-- SUPPRIMÉ pour accès Sidebar */
-
-    /* Meta-viewport simulation pour mobile */
-    @viewport {
-        width: device-width;
-        zoom: 1.0;
-    }
-
-    /* Style global "Mobile Native" */
-    .stApp {
-        background-color: #f2f2f7; /* Gris clair iOS */
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    /* Réduire le padding pour utiliser tout l'écran */
+    /* Supprimer les marges en haut pour coller au bord du téléphone */
     .block-container {
         padding-top: 1rem !important;
-        padding-bottom: 2rem !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding-bottom: 0rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
     
-    /* Force text color to black for all text elements */
-    .stApp, .stMarkdown, p, h1, h2, h3, h4, span, div, label {
-        color: #1c1c1e !important; /* Noir doux iOS */
-    }
-
-    /* Cards - Style iOS */
-    .tender-card {
-        background-color: white;
-        padding: 16px;
-        border-radius: 16px; 
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        margin-bottom: 16px;
-        border-left: none;
-    }
-
-    /* Boutons style iOS "Primary" */
-    .stButton > button {
+    /* Style des boutons "App Mobile" */
+    .stButton>button {
         width: 100%;
-        background-color: #007AFF !important;
-        color: white !important;
-        border: none;
         border-radius: 12px;
-        font-weight: 600;
-        font-size: 17px;
-        padding: 14px 20px;
-        margin-top: 5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        transition: transform 0.1s ease;
+        height: 3em;
+        background-color: #0068C9;
+        color: white;
+        font-weight: bold;
+        border: none;
     }
-    .stButton > button:hover {
-        background-color: #006ede !important;
-        transform: scale(0.98);
-    }
-    .stButton > button:active {
-        transform: scale(0.96);
-    }
-
-    /* Alerte Rouge Clignotante style iOS */
-    @keyframes blink {
-        0% { opacity: 1; }
-        50% { opacity: 0.6; }
-        100% { opacity: 1; }
-    }
-    .alert-urgent {
-        color: #ff3b30; /* Rouge iOS */
-        font-weight: 700;
-        animation: blink 2s infinite;
-        background-color: rgba(255, 59, 48, 0.1);
-        padding: 12px;
+    
+    /* Style des alertes */
+    .urgent-box {
+        background-color: #FFF2F2;
+        border: 1px solid #FF4B4B;
+        padding: 15px;
         border-radius: 10px;
-        text-align: center;
-        margin-top: 10px;
-        margin-bottom: 15px;
-        border: 1px solid rgba(255, 59, 48, 0.2);
+        margin-bottom: 10px;
     }
+    </style>
+    """, unsafe_allow_html=True)
 
-    /* Budget */
-    .budget-tag {
-        color: #34c759; /* Vert iOS */
-        font-weight: 700;
-        font-size: 1.1em;
-    }
-    
-    /* Titres Card */
-    .tender-card h3 {
-        font-size: 1.2rem;
-        margin-bottom: 8px;
-        font-weight: 700;
-    }
-    
-    /* Sidebar styling adjustment */
-    [data-testid="stSidebar"] {
-        background-color: #ffffff;
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- GESTION DES ÉTAPES (LOGIN -> ONBOARDING -> DASHBOARD) ---
+if 'step' not in st.session_state:
+    st.session_state.step = 'login'
 
-# --- État de session pour le Login ---
-if 'logged_in' not in st.session_state:
-    st.session_state['logged_in'] = False
-
-# --- Écran de Login ---
-if not st.session_state['logged_in']:
-    st.markdown("<h1 style='text-align: center;'>🎯 Tender Sniper</h1>", unsafe_allow_html=True)
-    st.markdown("<h4 style='text-align: center; color: #8e8e93 !important;'>Intelligence d'Appels d'Offres</h4>", unsafe_allow_html=True)
+# ==========================================
+# ÉTAPE 1 : ÉCRAN DE CONNEXION
+# ==========================================
+if st.session_state.step == 'login':
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.title("🎯 Tender Sniper")
+    st.caption("Intelligence d'Appels d'Offres")
     
-    st.write("")
-    st.write("")
-    
-    password = st.text_input("Mot de passe", type="password", placeholder="Entrez le code d'accès")
-    
-    if st.button("SE CONNECTER"):
-        if password == "DEMO":
-            st.session_state['logged_in'] = True
-            st.rerun()
-        else:
-            st.error("Mot de passe incorrect")
-
-# --- Application Principale avec Navigation ---
-else:
-    # --- Sidebar Navigation ---
-    st.sidebar.title("⚙️ Menu")
-    
-    navigation = st.sidebar.radio(
-        "Navigation",
-        ["📊 Mes Opportunités", "🎯 Configurer ma Veille"],
-        label_visibility="collapsed"
-    )
-
-    # --- PAGE 1 : Configurer ma Veille ---
-    if navigation == "🎯 Configurer ma Veille":
-        st.markdown("## 🎯 Configurer ma Veille")
-        st.markdown("Définissez vos critères pour que l'IA chasse les meilleurs marchés pour vous.")
+    with st.form("login_form"):
+        st.write("### Connexion")
+        password = st.text_input("Code d'accès", type="password")
+        submitted = st.form_submit_button("SE CONNECTER")
         
-        with st.form("config_form"):
-            st.markdown("### 🔍 Critères de Recherche")
-            
-            # Champ 1 : Mots-clés
-            keywords = st.multiselect(
-                "Mots-clés ciblés",
-                options=["Nettoyage", "Vitrerie", "Gros Oeuvre", "Gardiennage", "Électricité"],
-                default=["Nettoyage", "Vitrerie"]
-            )
-            
-            # Champ 2 : Zones
-            zones = st.multiselect(
-                "Zone Géographique",
-                options=["75 - Paris", "92 - Hauts-de-Seine", "93 - Seine-Saint-Denis", "94 - Val-de-Marne"],
-                default=["75 - Paris"]
-            )
-            
-            # Champ 3 : Budget
-            budget = st.slider(
-                "Budget Minimum du marché (€)",
-                min_value=10000,
-                max_value=1000000,
-                value=50000,
-                step=10000
-            )
-            
-            st.write("")
-            submitted = st.form_submit_button("💾 Sauvegarder mes critères")
-            
-            if submitted:
-                st.balloons()
-                st.success("✅ Le robot a bien reçu vos ordres. La recherche commence...")
-                time.sleep(2)
+        if submitted:
+            if password == "YESCLEAN" or password == "DEMO": # Mot de passe simple
+                st.session_state.step = 'onboarding'
+                st.rerun()
+            else:
+                st.error("Code incorrect.")
 
-    # --- PAGE 2 : Mes Opportunités (Dashboard Existant) ---
-    elif navigation == "📊 Mes Opportunités":
-        # Header Salutation
-        st.markdown("### Bonjour M. Essid 👋")
-        st.caption("Espace Client : **YesClean**")
+# ==========================================
+# ÉTAPE 2 : ONBOARDING (CONFIGURATION)
+# ==========================================
+elif st.session_state.step == 'onboarding':
+    st.title("⚙️ Configuration")
+    st.write("Bienvenue M. Essid. Configurez votre robot pour lancer la recherche.")
+    
+    with st.form("onboarding_form"):
+        st.subheader("1. Vos Cibles")
+        keywords = st.multiselect(
+            "Quels types de marchés ?",
+            ["Nettoyage", "Vitrerie", "Remise en état", "Espaces Verts"],
+            default=["Nettoyage", "Vitrerie"]
+        )
         
-        # KPIs
-        st.markdown("---")
+        st.subheader("2. Votre Zone")
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Opportunités", "3", "+1 aujourd'hui")
+            depts = st.multiselect(
+                "Départements",
+                ["75", "92", "93", "94", "77"],
+                default=["75", "93"]
+            )
         with col2:
-            st.metric("Potentiel", "6.8 M€")
+            budget = st.slider("Budget Min.", 10000, 500000, 50000)
+            
         st.markdown("---")
+        submitted = st.form_submit_button("🚀 LANCER L'ANALYSE")
+        
+        if submitted:
+            with st.spinner("Le robot scanne les bases de données..."):
+                time.sleep(2) # Faux temps de chargement pour l'effet "Waouh"
+            st.session_state.step = 'dashboard'
+            st.rerun()
 
-        # --- CARTE 1 : Centre Pompidou ---
+# ==========================================
+# ÉTAPE 3 : LE DASHBOARD (RÉSULTATS)
+# ==========================================
+elif st.session_state.step == 'dashboard':
+    # En-tête Client
+    st.write("👋 **Bonjour YesClean**")
+    
+    # KPIs
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Opportunités", "3", "+2 ce matin")
+    with col2:
+        st.metric("Potentiel", "6.8 M€", "High Ticket")
+        
+    st.markdown("---")
+    st.subheader("🔥 Alertes Urgentes")
+
+    # CARTE 1 : POMPIDOU (URGENT)
+    with st.container():
         st.markdown("""
-        <div class="tender-card">
-            <h3>🏛️ Centre Pompidou (Nettoyage)</h3>
-            <p>📍 <b>Lieu :</b> Paris (75)</p>
-            <p>💶 <b>Budget Estimé :</b> <span class="budget-tag">6,6 M€</span></p>
-            <div class="alert-urgent">⚠️ Visite Obligatoire : J-1</div>
+        <div class="urgent-box">
+            <h3 style="margin:0; color:#333;">🏛️ Centre Pompidou (Nettoyage)</h3>
+            <p style="color: grey; margin-bottom:5px;">📍 Paris (75) | 💰 <b>6,6 M€</b></p>
+            <p style="color: #FF4B4B; font-weight:bold;">⚠️ VISITE OBLIGATOIRE : J-1</p>
         </div>
         """, unsafe_allow_html=True)
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            st.button("📄 Synthèse IA", key="btn_syn_1")
+        with c2:
+            st.button("📥 Dossier (DCE)", key="btn_dce_1")
 
-        col_a, col_b = st.columns(2)
-        with col_a:
-            if st.button("🧠 Synthèse IA", key="btn1"):
-                st.info("Résumé : Marché global de performance pour le nettoyage des espaces d'exposition et des bureaux. Critère RSE prépondérant (30%). Attention : visite sur site demain à 10h impérative pour valider la candidature.")
-        with col_b:
-            if st.button("📂 Télécharger DCE", key="btn2"):
-                with st.spinner('Récupération sécurisée du DCE...'):
-                    time.sleep(1.5)
-                st.success("DCE téléchargé dans 'Mes Documents' !")
+    # CARTE 2 : AUDENCIA
+    with st.expander("🎓 Campus Audencia (St Ouen)", expanded=True):
+        st.write("**Budget :** 250 000 € / an")
+        st.write("**Date limite :** 15 Janvier")
+        st.info("💡 **Avis IA :** Marché parfait pour compléter vos tournées dans le 93.")
+        st.button("Voir le dossier", key="btn_2")
 
-        st.write("") # Spacer
-
-        # --- CARTE 2 : Campus Audencia ---
-        st.markdown("""
-        <div class="tender-card" style="border-left-color: #6c757d;">
-            <h3>🎓 Campus Audencia (Entretien)</h3>
-            <p>📍 <b>Lieu :</b> Saint-Ouen (93)</p>
-            <p>💶 <b>Budget Estimé :</b> <span class="budget-tag">250 K€</span></p>
-            <p style="color: orange; font-weight: bold;">⏳ Date limite : 15 jours</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        col_c, col_d = st.columns(2)
-        with col_c:
-            st.button("🧠 Synthèse IA", key="btn3")
-        with col_d:
-            st.button("📂 Télécharger DCE", key="btn4")
+    # Bouton de retour aux réglages (discret en bas)
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🔄 Modifier mes filtres"):
+        st.session_state.step = 'onboarding'
+        st.rerun()
